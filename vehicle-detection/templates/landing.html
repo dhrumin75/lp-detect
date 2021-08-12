@@ -1,0 +1,172 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>LP Detect</title>
+        <link rel="stylesheet" href="{% static 'vendors/mdi/css/materialdesignicons.min.css' %}">
+        <link rel="stylesheet" href="{% static 'vendors/css/vendor.bundle.base.css' %}">
+
+        <!-- <link rel="stylesheet" href="{% static 'css/landing.css' %}"> -->
+        <link rel="stylesheet" href="{% static 'css/about.css' %}">
+        <link rel="stylesheet" href="{% static 'css/dark_mode.css' %}">
+        <link rel="shortcut icon" href="{% static 'images/logo-mini.svg' %}"/>
+        <link async href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+              integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <style>
+
+            @media (max-width: 991px) {
+                .container_image {
+                    display: block;
+                    max-width: 100%;
+                    max-height: 120%;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+            }
+            body {
+                background-color: #151519;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            .container_image {
+                display: block;
+                max-width: 100%;
+                max-height: 100%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .image-border {
+                border-width: 3px 3px 3px 3px;
+                border-color: rgba(132, 137, 145, 1);
+                border-radius: 6px;
+            }
+
+            .image-wrapper {
+                /*padding: 150px 0 50px 0;*/
+                background-color: #151519
+            }
+
+            iframe {
+                overflow: hidden;
+            }
+
+            label[for="id_file"], label[for="secondModel"] {
+
+                font-size: 30px;
+                background: linear-gradient(to right, #5c97ee, #047edf 99%);
+                margin-top: 10px;
+                border-radius: 7px;
+                padding: 10px 20px;
+                font-family: "ubuntu-medium", sans-serif;
+                font-size: 15px;
+                text-align: center;
+                color: white;
+                cursor: pointer;
+            }
+
+            #id_file, #secondModel {
+                display: none;
+            }
+
+            .fa i {
+                background: linear-gradient(to right, #77a0ec, #668dff 99%);
+            }
+        </style>
+    </head>
+<body>
+<div class="container-scroller">
+    <div class="container" id="below-btn2">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12" >
+                    <div class="text-center">
+                        <h3 id="hide-text" class="hide-text">Try It Out</h3>
+                    </div>
+                    <div class="text-center" >
+                        <h6 id="hide-text" class="hide-text"><span>Upload Image and we will detect the License Plate Number</span>
+                        </h6> <br><br>
+                        <form id="form" action="/result/" class="post-form" method="post"
+                              enctype="multipart/form-data" target="_blank">
+
+                            <i class="input-helper"></i>
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                        </form>
+
+                    </div>
+
+                    <div class="text-center">
+                        <form id="form1" action="{% url 'yolo_crnet' %}" class="post-form" method="post" target="_blank" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form1.as_p }}
+                        </form>
+                    </div>
+                    {% if img %}
+                        <div class="image-border">
+
+                            <img src="{% static 'upload/results/sdad.jpg' %}" class="container_image" width="980"
+                                 height="720"
+                                 style="max-height: 100%;max-width: 100%">
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#save-submit').attr('src', e.target.result);
+
+                }
+                reader.readAsDataURL(input.files[0]); // convert to base64 string
+            }
+        }
+
+        document.getElementById("id_file").onchange = function () {
+            document.getElementById("form").submit();
+        };
+
+        document.getElementById("secondModel").onchange = function () {
+            document.getElementById("form1").submit();
+        };
+
+        document.getElementById("browse-button").onchange = function () {
+            document.getElementById("re-form").click();
+        }
+
+        function thisFileUpload() {
+            document.getElementById("file").click();
+            document.getElementById("file1").click();
+        }
+
+        function submit() {
+            document.getElementsByTagName('form').submit();
+        }
+
+        $("form").submit(function (e) {
+            e.preventDefault();
+        });
+
+    </script>
+    
+</div>
+
+<script src="{% static 'vendors/js/vendor.bundle.base.js' %}"></script>
+<script src="{% static 'js/off-canvas.js' %}"></script>
+<script src="{% static 'js/hoverable-collapse.js' %}"></script>
+<script src="{% static 'js/misc.js' %}"></script>
+<script src="{% static 'js/settings.js' %}"></script>
+<script src="{% static 'js/todolist.js' %}"></script>
+</body>
+</html>
